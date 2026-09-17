@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>NEXUS Team Contribution Guide</title>
+<style>
+@page { size: A4; margin: 16mm; }
+* { box-sizing: border-box; }
+body { font-family: "Segoe UI", Arial, sans-serif; color: #172033; line-height: 1.45; margin: 0; font-size: 11pt; }
+h1 { color: #123b68; font-size: 26pt; margin: 0 0 4px; }
+h2 { color: #123b68; border-bottom: 2px solid #2b80c5; padding-bottom: 4px; margin: 22px 0 10px; font-size: 16pt; }
+h3 { color: #1b5f91; margin: 14px 0 3px; font-size: 12pt; }
+p { margin: 6px 0; }
+.subtitle { color: #52657d; font-size: 12pt; margin-bottom: 18px; }
+.banner { background: #eaf4fc; border-left: 5px solid #2b80c5; padding: 12px 14px; margin: 14px 0; }
+.team { display: grid; grid-template-columns: 1fr 1fr; gap: 9px; }
+.member { border: 1px solid #c9d8e6; border-radius: 6px; padding: 10px; break-inside: avoid; }
+.member strong { color: #123b68; }
+.branch { font-family: Consolas, monospace; color: #7b3f00; font-size: 9.5pt; overflow-wrap: anywhere; }
+code, pre { font-family: Consolas, monospace; }
+pre { background: #f3f6f9; border: 1px solid #d7e0e8; border-radius: 5px; padding: 10px; white-space: pre-wrap; font-size: 9pt; }
+ul { margin-top: 5px; }
+li { margin: 3px 0; }
+.footer { margin-top: 24px; padding-top: 8px; border-top: 1px solid #c9d8e6; color: #61748a; font-size: 9pt; }
+@media print { a { color: #123b68; text-decoration: none; } .member { break-inside: avoid; } }
+</style>
+</head>
+<body>
+<h1>NEXUS Team Contribution Guide</h1>
+<div class="subtitle">Evidence-First Investigative Intelligence | Six-member GitHub workflow</div>
+<div class="banner"><strong>Repository:</strong> <a href="https://github.com/Aryansh077/NEXUS-Investigative-Intelligence">github.com/Aryansh077/NEXUS-Investigative-Intelligence</a><br>Use synthetic data only. Never treat an anomaly as proof of criminality.</div>
+
+<h2>Team Assignments</h2>
+<div class="team">
+<div class="member"><strong>Member 1: Data Ingestion and Backend</strong><p class="branch">feature/ingestion-backend</p><p>Owns upload APIs, parsing, normalization, validation, database storage, and evidence registration.</p><small>Folders: backend/app/services/ingestion/, backend/app/api/ingestion.py, backend/app/database/, scripts/seed_database.py</small></div>
+<div class="member"><strong>Member 2: NLP and Entity Resolution</strong><p class="branch">feature/nlp-resolution</p><p>Owns entity extraction, aliases, fuzzy matching, confidence scores, and relationship extraction.</p><small>Folders: backend/app/services/nlp/, entity_resolution/, relationship_extraction/</small></div>
+<div class="member"><strong>Member 3: Knowledge Graph</strong><p class="branch">feature/knowledge-graph</p><p>Owns graph construction, paths, centrality, communities, and Cypher artifacts.</p><small>Folders: backend/app/services/graph/, neo4j/</small></div>
+<div class="member"><strong>Member 4: ML and Anomaly Detection</strong><p class="branch">feature/ml-anomaly</p><p>Owns feature engineering, Isolation Forest, anomaly explanations, evaluation, and ML tests.</p><small>Folders: ml/, backend/app/services/anomaly/</small></div>
+<div class="member"><strong>Member 5: Frontend and Visualization</strong><p class="branch">feature/frontend-visualization</p><p>Owns dashboard, entities, graph, timeline, evidence, anomalies, Copilot UI, and API states.</p><small>Folder: frontend/</small></div>
+<div class="member"><strong>Member 6: Copilot, Security, and Integration</strong><p class="branch">feature/copilot-security</p><p>Owns grounded Copilot, authentication, RBAC, audit, Docker, CI, and integration checks.</p><small>Folders: backend/app/services/copilot/, backend/app/security/, Dockerfile, .github/</small></div>
+</div>
+
+<h2>First-time Setup</h2>
+<pre>git clone https://github.com/Aryansh077/NEXUS-Investigative-Intelligence.git
+Set-Location NEXUS-Investigative-Intelligence
+git switch YOUR_ASSIGNED_BRANCH
+git pull origin YOUR_ASSIGNED_BRANCH</pre>
+
+<h2>Run and Test</h2>
+<p>Backend terminal:</p>
+<pre>Set-Location backend
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
+python -m pip install -r requirements.txt
+python ..\scripts\generate_data.py
+python ..\scripts\seed_database.py
+python -m uvicorn app.main:app --reload --port 8000</pre>
+<p>Frontend terminal:</p>
+<pre>Set-Location frontend
+npm install
+npm run dev -- --host 0.0.0.0 --port 5173</pre>
+<p>Open <strong>http://localhost:5173</strong>. API docs are at <strong>http://localhost:8000/docs</strong>.</p>
+<p>Demo login: <strong>investigator</strong> / <strong>nexus-demo</strong></p>
+
+<h2>Before a Pull Request</h2>
+<pre>Set-Location backend
+.\.venv\Scripts\python.exe -m pytest -q
+Set-Location ..\frontend
+npm run build
+Set-Location ..
+git add .
+git commit -m "Describe the focused change"
+git push -u origin YOUR_ASSIGNED_BRANCH</pre>
+<p>Open a Pull Request on GitHub with base branch <strong>main</strong>. Another member should review it before merge.</p>
+
+<h2>Team Rules</h2>
+<ul>
+<li>Do not develop directly on <strong>main</strong>.</li>
+<li>Do not commit <strong>.env</strong>, <strong>.venv</strong>, <strong>node_modules</strong>, database files, credentials, or private data.</li>
+<li>Use synthetic demonstration data only.</li>
+<li>Update tests when backend behavior changes.</li>
+<li>Update frontend API calls when an API contract changes.</li>
+<li>Do not claim model accuracy or training results that were not measured.</li>
+<li>Anomaly results are investigative leads requiring human verification.</li>
+</ul>
+<div class="footer">NEXUS | From fragmented data to connected intelligence | Local SIH prototype</div>
+</body>
+</html>
