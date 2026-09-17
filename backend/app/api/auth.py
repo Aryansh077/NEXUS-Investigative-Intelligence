@@ -15,3 +15,9 @@ def login(payload: LoginRequest):
         raise HTTPException(status_code=401, detail="Invalid credentials")
     log_action(payload.username, "login")
     return {"token": "demo-local-token", "username": payload.username, "role": "investigator"}
+
+
+@router.post("/logout")
+def logout(payload: LoginRequest):
+    log_action(payload.username, "logout")
+    return {"ok": True}

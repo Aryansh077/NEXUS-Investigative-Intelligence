@@ -2,6 +2,8 @@ from pathlib import Path
 import csv, random, json
 from datetime import datetime, timedelta
 
+random.seed(42)
+
 ROOT=Path(__file__).resolve().parents[1]
 DATA=ROOT/"data"/"synthetic"
 for d in ["fir","cdr","financial","surveillance","reports"]:
@@ -21,6 +23,11 @@ phones={"P001":"9876500001","P002":"9876500002","P003":"9876500003","P004":"9876
 accounts={f"P00{i}":f"ACC00{i}" for i in range(1,9)}
 vehicles={"P001":"MH12AB1234","P002":"MH14CD5678","P003":"MH12EF9012","P004":"MH12GH3456","P005":"MH14JK7890","P006":"MH12LM1234","P007":"MH14NP5678","P008":"MH12QR9012"}
 start=datetime(2026,5,1)
+
+with (DATA/"people.csv").open("w",newline="",encoding="utf8") as f:
+    w=csv.writer(f); w.writerow(["person_id","name","alias","phone","account","vehicle"])
+    for person_id, name, alias in people:
+        w.writerow([person_id, name, alias, phones[person_id], accounts[person_id], vehicles[person_id]])
 
 with (DATA/"cdr"/"cdr_may.csv").open("w",newline="",encoding="utf8") as f:
     w=csv.writer(f); w.writerow(["call_id","caller","receiver","timestamp","duration","cell_tower"])

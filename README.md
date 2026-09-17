@@ -74,6 +74,21 @@ http://localhost:8000
 Swagger docs:
 http://localhost:8000/docs
 
+### Docker deployment
+
+From the repository root, build and start the single-container demo:
+
+```powershell
+docker compose up --build
+```
+
+Open http://localhost:8000. The container serves the built frontend and API
+together, and persists the synthetic SQLite database in the `nexus-data` volume.
+The container is intended for local demonstration, not production deployment.
+
+Health check:
+http://localhost:8000/api/health
+
 ## Demo login
 
 This prototype uses a local demo login:
@@ -97,3 +112,8 @@ network isolation, model governance and authorized institutional data connectors
 
 Never upload real police, intelligence, CDR, financial or personally identifying
 investigative data into this prototype.
+
+## Team workflow
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for the GitHub branch workflow and
+[docs/TEAM_TASKS.md](docs/TEAM_TASKS.md) for six-member ownership.

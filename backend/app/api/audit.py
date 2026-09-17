@@ -9,3 +9,11 @@ def audit(case_id: str):
     rows = conn.execute("SELECT * FROM audit_logs WHERE case_id=? ORDER BY timestamp DESC", (case_id,)).fetchall()
     conn.close()
     return [dict(r) for r in rows]
+
+
+@router.get("")
+def all_audit():
+    conn = get_conn()
+    rows = conn.execute("SELECT * FROM audit_logs ORDER BY timestamp DESC").fetchall()
+    conn.close()
+    return [dict(r) for r in rows]

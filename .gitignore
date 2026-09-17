@@ -40,3 +40,7 @@ Thumbs.db
 # Generated uploads/outputs
 uploads/
 outputs/
+
+# Generated ML artifacts
+ml/models/*.joblib
+ml/models/*.pkl

@@ -2,7 +2,7 @@ import React, {useEffect, useRef, useState} from "react";
 import {createRoot} from "react-dom/client";
 import axios from "axios";
 import cytoscape from "cytoscape";
-import {Shield, LayoutDashboard, FolderSearch, Network, Clock3, FileSearch, AlertTriangle, Bot, Upload, Search, LogOut, ChevronRight} from "lucide-react";
+import {Shield, LayoutDashboard, FolderSearch, Network, Clock3, FileSearch, AlertTriangle, Bot, Upload, Search, LogOut, ChevronRight, Users} from "lucide-react";
 import "./styles.css";
 const API = import.meta.env.VITE_API_URL || "http://localhost:8000";
 function api(path, options={}) {
@@ -36,6 +36,7 @@ const nav=[
   ["dashboard","Dashboard",LayoutDashboard],
   ["cases","Cases",FolderSearch],
   ["graph","Network Graph",Network],
+  ["entities","Entities",Users],
   ["timeline","Timeline",Clock3],
   ["evidence","Evidence",FileSearch],
   ["anomalies","Anomalies",AlertTriangle],
@@ -57,10 +58,10 @@ function Layout({page,setPage,children,user,onLogout}) {
 function Header({title,subtitle,action}) { return <div className="header"><div><div className="eyebrow">CASE WORKSPACE / CASE-1023</div><h2>{title}</h2><p>{subtitle}</p></div>{action}</div> }
 
 function Dashboard({setPage}) {
- const [metrics,setMetrics]=useState(null), [evidence,setEvidence]=useState([]);
- useEffect(()=>{api("/api/graph/CASE-1023/metrics").then(setMetrics);api("/api/evidence/CASE-1023").then(setEvidence)},[]);
+ const [metrics,setMetrics]=useState(null), [evidence,setEvidence]=useState([]), [entityCount,setEntityCount]=useState(null), [error,setError]=useState("");
+ useEffect(()=>{Promise.all([api("/api/graph/CASE-1023/metrics"),api("/api/evidence/CASE-1023"),api("/api/entities/CASE-1023")]).then(([nextMetrics,nextEvidence,nextEntities])=>{setMetrics(nextMetrics);setEvidence(nextEvidence);setEntityCount(nextEntities.length)}).catch(()=>setError("Unable to load case data. Confirm the backend is running on port 8000."))},[]);
  return <><Header title="Investigation Overview" subtitle="Evidence-first network intelligence for Operation Meridian." action={<button className="primary" onClick={()=>setPage("graph")}><Network size={17}/>Open network</button>}/>
- <div className="grid stats"><Stat label="CASE STATUS" value="ACTIVE" sub="Operation Meridian"/><Stat label="ENTITIES" value={metrics?Object.keys(metrics.degree||{}).length||8:"—"} sub="Across connected sources"/><Stat label="EVIDENCE" value={evidence.length} sub="Source-linked records"/><Stat label="NETWORK" value={metrics?.communities?.length||"—"} sub="Detected components"/></div>
+ <div className="grid stats"><Stat label="CASE STATUS" value="ACTIVE" sub="Operation Meridian"/><Stat label="ENTITIES" value={entityCount ?? "—"} sub="Across connected sources"/><Stat label="EVIDENCE" value={evidence.length} sub="Source-linked records"/><Stat label="NETWORK" value={metrics?.communities?.length||"—"} sub="Detected components"/></div>{error&&<div className="error banner">{error}</div>}
  <div className="grid two">
   <section className="panel"><div className="panel-title"><div><b>Investigation pulse</b><span>Current analytical signals</span></div><span className="status">LIVE LOCAL DATA</span></div>
    <div className="signal"><div className="signal-icon"><Network/></div><div><b>Network relationships available</b><span>Explore entity paths and source records.</span></div><button className="ghost" onClick={()=>setPage("graph")}>Explore</button></div>
@@ -106,13 +107,13 @@ function EvidencePage(){
 }
 
 function EntitiesPage(){
- const [items,setItems]=useState([]);useEffect(()=>{api("/api/entities/CASE-1023").then(setItems)},[]);
- return <><Header title="Entity Resolution" subtitle="Inspect identities extracted and resolved across fragmented records."/><section className="panel"><div className="table-head"><span>ENTITY</span><span>TYPE</span><span>ID</span><span>RESOLUTION</span></div>{items.map(e=>{let m={};try{m=JSON.parse(e.metadata_json)}catch{};return <div className="table-row" key={e.id}><b>{e.name}</b><span className="tag">{e.type}</span><span>{e.id}</span><span>{m.resolution_confidence?Math.round(m.resolution_confidence*100)+"%":"Source-derived"}</span></div>})}</section></>
+ const [items,setItems]=useState([]), [loading,setLoading]=useState(true), [error,setError]=useState("");useEffect(()=>{api("/api/entities/CASE-1023").then(setItems).catch(()=>setError("Unable to load entities. Confirm the backend is running on port 8000.")).finally(()=>setLoading(false))},[]);
+ return <><Header title="Entity Resolution" subtitle="Inspect identities extracted and resolved across fragmented records."/><section className="panel"><div className="panel-title"><div><b>{items.length} entities in CASE-1023</b><span>Identities extracted and resolved across fragmented records.</span></div></div>{error&&<div className="error banner">{error}</div>}{loading?<div className="empty">Loading entities…</div>:!items.length&&!error?<div className="empty">No entities found. Seed the synthetic case data, then refresh this page.</div>:<><div className="table-head"><span>ENTITY</span><span>TYPE</span><span>ID</span><span>RESOLUTION</span></div>{items.map(e=>{let m={};try{m=JSON.parse(e.metadata_json)}catch{};return <div className="table-row" key={e.id}><b>{e.name}</b><span className="tag">{e.type}</span><span>{e.id}</span><span>{m.resolution_confidence?Math.round(m.resolution_confidence*100)+"%":"Source-derived"}</span></div>})}</>}</section></>
 }
 
 function AnomaliesPage(){
- const [items,setItems]=useState([]);useEffect(()=>{api("/api/anomalies/CASE-1023").then(setItems)},[]);
- return <><Header title="Anomaly Detection" subtitle="Statistical deviations are investigative leads, not conclusions."/><section className="panel"><div className="panel-title"><div><b>Potential unusual patterns</b><span>Generated from local relationship activity</span></div></div>{items.length?items.map(a=><div className="anomaly" key={a.id}><div className="alert-icon"><AlertTriangle size={19}/></div><div><b>{a.severity.toUpperCase()} — unusual network activity</b><span>{a.reason}</span><small>Score {a.score} · Pending investigator review</small></div><button className="ghost">Review evidence</button></div>):<div className="empty">No current anomalies above the prototype threshold.</div>}</section></>
+ const [items,setItems]=useState([]), [running,setRunning]=useState(false); const run=async()=>{setRunning(true);try{const result=await api("/api/anomalies/CASE-1023/run",{method:"POST"});setItems(result.results)}finally{setRunning(false)}}; useEffect(()=>{run()},[]);
+ return <><Header title="Anomaly Detection" subtitle="Statistical deviations are investigative leads, not conclusions." action={<button className="secondary" onClick={run}>{running?"Running…":"Run Isolation Forest"}</button>}/><section className="panel"><div className="panel-title"><div><b>Potential unusual patterns</b><span>Runtime model: Isolation Forest · pending investigator review</span></div></div>{items.length?items.map(a=><div className="anomaly" key={a.id}><div className="alert-icon"><AlertTriangle size={19}/></div><div><b>{a.severity.toUpperCase()} — unusual network activity</b><span>{a.reason}</span><small>Score {a.score} · {a.model} · Pending investigator review</small></div><button className="ghost">Review evidence</button></div>):<div className="empty">No current anomalies above the prototype threshold.</div>}</section></>
 }
 
 function CopilotPage(){

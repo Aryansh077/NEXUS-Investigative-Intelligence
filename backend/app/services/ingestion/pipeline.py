@@ -31,6 +31,48 @@ def add_evidence(case_id, record_type, title, content, source_file, timestamp=No
     conn.close()
     return eid
 
+
+def _ingest_structured_records(case_id: str, records: list[dict], original_name: str):
+    created = 0
+    for record in records:
+        data = {str(key): str(value) for key, value in record.items()}
+        evidence_id = add_evidence(
+            case_id,
+            "structured",
+            f"{original_name} record",
+            json.dumps(data, sort_keys=True),
+            original_name,
+            data.get("timestamp") or data.get("date"),
+        )
+        entities = []
+        if data.get("person_id") and data.get("name"):
+            resolve_or_create_entity(case_id, "PERSON", data["name"])
+        for key in ["caller", "receiver", "sender", "receiver_account", "owner", "person_id", "person", "vehicle_id", "registration", "location", "account"]:
+            if key == "person_id" and data.get("name"):
+                continue
+            if data.get(key):
+                entity_type = "PERSON" if key in {"caller", "receiver", "person_id", "person", "owner"} else (
+                    "VEHICLE" if key in {"vehicle_id", "registration"} else (
+                        "LOCATION" if key == "location" else "OTHER"
+                    )
+                )
+                entities.append((entity_type, data[key]))
+        ids = [resolve_or_create_entity(case_id, entity_type, name) for entity_type, name in entities]
+        for relationship in relations_from_record(data, ids):
+            from ..relationship_extraction.extractor import store_relationship
+
+            store_relationship(
+                case_id,
+                relationship["source_id"],
+                relationship["target_id"],
+                relationship["type"],
+                relationship.get("timestamp"),
+                evidence_id,
+                relationship.get("confidence", 0.95),
+            )
+            created += 1
+    return created
+
 def ingest_file(case_id: str, path: str, original_name: str):
     suffix = Path(path).suffix.lower()
     if suffix in {".txt",".pdf",".docx"}:
@@ -48,23 +90,17 @@ def ingest_file(case_id: str, path: str, original_name: str):
                 created += 1
         return {"ok": True, "type": "document", "evidence_id": evidence_id, "entities": len(extracted["entities"]), "relationships": created}
 
+    if suffix == ".json":
+        payload = json.loads(Path(path).read_text(encoding="utf-8"))
+        records = payload if isinstance(payload, list) else payload.get("records", [])
+        if not isinstance(records, list) or not all(isinstance(record, dict) for record in records):
+            raise ValueError("JSON upload must contain a list of records or a records list")
+        return {"ok": True, "type": "json", "rows": len(records), "relationships": _ingest_structured_records(case_id, records, original_name)}
+
     if suffix == ".csv":
         import pandas as pd
         df = pd.read_csv(path)
-        created = 0
-        for _, row in df.fillna("").iterrows():
-            data = {str(k): str(v) for k,v in row.items()}
-            evidence_id = add_evidence(case_id, "structured", f"{original_name} record", json.dumps(data), original_name, data.get("timestamp") or data.get("date"))
-            ents = []
-            for key in ["caller","receiver","sender","receiver_account","owner","person_id","person","vehicle_id","registration","location","account"]:
-                if data.get(key):
-                    typ = "PERSON" if key in {"caller","receiver","person_id","person","owner"} else ("VEHICLE" if key in {"vehicle_id","registration"} else ("LOCATION" if key=="location" else "OTHER"))
-                    ents.append((typ, data[key]))
-            ids = [resolve_or_create_entity(case_id, t, n) for t,n in ents]
-            for rel in relations_from_record(data, ids):
-                from ..relationship_extraction.extractor import store_relationship
-                store_relationship(case_id, rel["source_id"], rel["target_id"], rel["type"], rel.get("timestamp"), evidence_id, rel.get("confidence",0.95))
-                created += 1
-        return {"ok": True, "type": "csv", "rows": len(df), "relationships": created}
+        records = [{str(k): value for k, value in row.items()} for row in df.fillna("").to_dict(orient="records")]
+        return {"ok": True, "type": "csv", "rows": len(records), "relationships": _ingest_structured_records(case_id, records, original_name)}
 
     raise ValueError("Unsupported file")

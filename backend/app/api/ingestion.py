@@ -1,6 +1,7 @@
 from fastapi import APIRouter, UploadFile, File, HTTPException
 from pathlib import Path
 import tempfile
+import os
 from ..services.ingestion.pipeline import ingest_file
 
 router = APIRouter()
@@ -11,8 +12,13 @@ async def upload(case_id: str, file: UploadFile = File(...)):
     allowed = {".csv", ".json", ".txt", ".pdf", ".docx"}
     if suffix not in allowed:
         raise HTTPException(400, f"Unsupported file type: {suffix}")
+    content = await file.read()
+    if len(content) > 25 * 1024 * 1024:
+        raise HTTPException(413, "File exceeds the 25 MB prototype limit")
     with tempfile.NamedTemporaryFile(delete=False, suffix=suffix) as tmp:
-        tmp.write(await file.read())
+        tmp.write(content)
         temp_path = tmp.name
-    result = ingest_file(case_id, temp_path, file.filename or "upload")
-    return result
+    try:
+        return ingest_file(case_id, temp_path, file.filename or "upload")
+    finally:
+        os.unlink(temp_path)
