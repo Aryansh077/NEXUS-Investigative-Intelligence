@@ -43,12 +43,12 @@ def build():
     banner.setStyle(TableStyle([("BACKGROUND", (0, 0), (-1, -1), colors.HexColor("#eaf4fc")), ("BOX", (0, 0), (-1, -1), 0.6, colors.HexColor("#2b80c5")), ("LEFTPADDING", (0, 0), (-1, -1), 9), ("RIGHTPADDING", (0, 0), (-1, -1), 9), ("TOPPADDING", (0, 0), (-1, -1), 8), ("BOTTOMPADDING", (0, 0), (-1, -1), 8)]))
     story += [banner, p("Team Assignments", "HeadingNexus")]
     cards = [
-        member("Member 1: Data Ingestion and Backend", "feature/ingestion-backend", "Upload APIs, parsing, normalization, validation, database storage, and evidence registration.", "Folders: backend/app/services/ingestion/, backend/app/api/ingestion.py, backend/app/database/, scripts/seed_database.py"),
-        member("Member 2: NLP and Entity Resolution", "feature/nlp-resolution", "Entity extraction, aliases, fuzzy matching, confidence scores, and relationship extraction.", "Folders: backend/app/services/nlp/, entity_resolution/, relationship_extraction/"),
-        member("Member 3: Knowledge Graph", "feature/knowledge-graph", "Graph construction, paths, centrality, communities, and Cypher artifacts.", "Folders: backend/app/services/graph/, neo4j/"),
-        member("Member 4: ML and Anomaly Detection", "feature/ml-anomaly", "Feature engineering, Isolation Forest, anomaly explanations, evaluation, and ML tests.", "Folders: ml/, backend/app/services/anomaly/"),
-        member("Member 5: Frontend and Visualization", "feature/frontend-visualization", "Dashboard, entities, graph, timeline, evidence, anomalies, Copilot UI, and API states.", "Folder: frontend/"),
-        member("Member 6: Copilot, Security, and Integration", "feature/copilot-security", "Grounded Copilot, authentication, RBAC, audit, Docker, CI, and integration checks.", "Folders: backend/app/services/copilot/, backend/app/security/, Dockerfile, .github/"),
+        member("Member 1: DIKSHA - Data Ingestion and Backend", "feature/ingestion-backend", "Upload APIs, parsing, normalization, validation, database storage, and evidence registration.", "Folders: backend/app/services/ingestion/, backend/app/api/ingestion.py, backend/app/database/, scripts/seed_database.py"),
+        member("Member 2: SANIKA - NLP and Entity Resolution", "feature/nlp-resolution", "Entity extraction, aliases, fuzzy matching, confidence scores, and relationship extraction.", "Folders: backend/app/services/nlp/, entity_resolution/, relationship_extraction/"),
+        member("Member 3: SAMIKSHA - Knowledge Graph", "feature/knowledge-graph", "Graph construction, paths, centrality, communities, and Cypher artifacts.", "Folders: backend/app/services/graph/, neo4j/"),
+        member("Member 4: MADHURA - ML and Anomaly Detection", "feature/ml-anomaly", "Feature engineering, Isolation Forest, anomaly explanations, evaluation, and ML tests.", "Folders: ml/, backend/app/services/anomaly/"),
+        member("Member 5: SRINIDHI - Frontend and Visualization", "feature/frontend-visualization", "Dashboard, entities, graph, timeline, evidence, anomalies, Copilot UI, and API states.", "Folder: frontend/"),
+        member("Member 6: ARYANSH - Copilot, Security, and Integration", "feature/copilot-security", "Grounded Copilot, authentication, RBAC, audit, Docker, CI, and integration checks.", "Folders: backend/app/services/copilot/, backend/app/security/, Dockerfile, .github/"),
     ]
     grid = Table([[cards[0], cards[1]], [cards[2], cards[3]], [cards[4], cards[5]]], colWidths=[91 * mm, 91 * mm], hAlign="LEFT")
     grid.setStyle(TableStyle([("VALIGN", (0, 0), (-1, -1), "TOP"), ("LEFTPADDING", (0, 0), (-1, -1), 0), ("RIGHTPADDING", (0, 0), (-1, -1), 5), ("TOPPADDING", (0, 0), (-1, -1), 3), ("BOTTOMPADDING", (0, 0), (-1, -1), 3)]))
