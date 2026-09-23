@@ -28,11 +28,18 @@ def get_case(case_id: str):
 
 @router.post("")
 def create_case(payload: CaseCreate):
+    case_id = payload.id.strip().upper()
+    title = payload.title.strip()
+    if not case_id or not title:
+        raise HTTPException(400, "Case number and name are required")
     conn = get_conn()
+    if conn.execute("SELECT 1 FROM cases WHERE id=?", (case_id,)).fetchone():
+        conn.close()
+        raise HTTPException(409, "A case with this number already exists")
     conn.execute(
-        "INSERT OR REPLACE INTO cases(id,title,description,status,created_at) VALUES (?,?,?,?,?)",
-        (payload.id, payload.title, payload.description, "Active", datetime.now(timezone.utc).isoformat())
+        "INSERT INTO cases(id,title,description,status,created_at) VALUES (?,?,?,?,?)",
+        (case_id, title, payload.description.strip(), "Active", datetime.now(timezone.utc).isoformat())
     )
     conn.commit()
     conn.close()
-    return {"ok": True, "case_id": payload.id}
+    return {"ok": True, "case_id": case_id}

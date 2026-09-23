@@ -13,10 +13,24 @@ def load_graph(case_id):
         G.add_edge(r["source_id"], r["target_id"], id=r["id"], type=r["type"], confidence=r["confidence"], timestamp=r["timestamp"], source_record=r["source_record"], verification=r["verification"])
     return G, ents, rels
 
-def graph_for_case(case_id):
+def graph_for_case(case_id, entity_type=None, search=None):
     G, ents, rels = load_graph(case_id)
+    if entity_type:
+        allowed_types = {value.strip().upper() for value in entity_type.split(",")}
+        allowed_nodes = {entity["id"] for entity in ents if entity["type"].upper() in allowed_types}
+        G.remove_nodes_from(set(G.nodes) - allowed_nodes)
+        ents = [entity for entity in ents if entity["id"] in allowed_nodes]
+    if search:
+        needle = search.casefold()
+        matching_nodes = {
+            entity["id"] for entity in ents
+            if needle in entity["id"].casefold() or needle in entity["name"].casefold()
+        }
+        G.remove_nodes_from(set(G.nodes) - matching_nodes)
+        ents = [entity for entity in ents if entity["id"] in matching_nodes]
     nodes = [{"id":n, **d} for n,d in G.nodes(data=True)]
-    edges = [{"id":d.get("id"), "source":u, "target":v, **{k:d[k] for k in ["type","confidence","timestamp","source_record","verification"]}} for u,v,d in G.edges(data=True)]
+    visible_nodes = set(G.nodes)
+    edges = [{"id":d.get("id"), "source":u, "target":v, **{k:d[k] for k in ["type","confidence","timestamp","source_record","verification"]}} for u,v,d in G.edges(data=True) if u in visible_nodes and v in visible_nodes]
     return {"nodes":nodes, "edges":edges}
 
 def find_path(case_id, source, target):

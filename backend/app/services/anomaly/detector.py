@@ -5,7 +5,7 @@ def detect_case_anomalies(case_id):
     conn=get_conn()
     entities=conn.execute("SELECT id FROM entities WHERE case_id=?", (case_id,)).fetchall()
     rows=conn.execute("""
-        SELECT source_id, target_id, timestamp, confidence
+        SELECT source_id, target_id, timestamp, confidence, source_record
         FROM relationships WHERE case_id=?
     """,(case_id,)).fetchall()
     conn.close()
@@ -22,6 +22,8 @@ def detect_case_anomalies(case_id):
             "features": result["features"],
             "model": "IsolationForest",
             "verification": "pending",
+            "evidence_id": next((row["source_record"] for row in rows
+                                  if row["source_record"] and result["entity_id"] in {row["source_id"], row["target_id"]}), None),
         }
         for index, result in enumerate(results, start=1)
     ]

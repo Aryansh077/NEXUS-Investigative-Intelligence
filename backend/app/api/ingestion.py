@@ -3,11 +3,17 @@ from pathlib import Path
 import tempfile
 import os
 from ..services.ingestion.pipeline import ingest_file
+from ..database.db import get_conn
 
 router = APIRouter()
 
 @router.post("/{case_id}")
 async def upload(case_id: str, file: UploadFile = File(...)):
+    conn = get_conn()
+    exists = conn.execute("SELECT 1 FROM cases WHERE id=?", (case_id,)).fetchone()
+    conn.close()
+    if not exists:
+        raise HTTPException(404, "Case not found")
     suffix = Path(file.filename or "").suffix.lower()
     allowed = {".csv", ".json", ".txt", ".pdf", ".docx"}
     if suffix not in allowed:

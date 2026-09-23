@@ -62,7 +62,11 @@ def init_db():
         score REAL,
         severity TEXT,
         reason TEXT,
-        created_at TEXT
+        created_at TEXT,
+        verification TEXT DEFAULT 'pending',
+        reviewed_by TEXT,
+        reviewed_at TEXT,
+        review_note TEXT
     );
 
     CREATE TABLE IF NOT EXISTS audit_logs (
@@ -74,5 +78,14 @@ def init_db():
         timestamp TEXT
     );
     """)
+    anomaly_columns = {row[1] for row in conn.execute("PRAGMA table_info(anomalies)").fetchall()}
+    for column, definition in {
+        "verification": "TEXT DEFAULT 'pending'",
+        "reviewed_by": "TEXT",
+        "reviewed_at": "TEXT",
+        "review_note": "TEXT",
+    }.items():
+        if column not in anomaly_columns:
+            conn.execute(f"ALTER TABLE anomalies ADD COLUMN {column} {definition}")
     conn.commit()
     conn.close()
