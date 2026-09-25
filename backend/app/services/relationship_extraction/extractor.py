@@ -23,16 +23,37 @@ def store_relationship(case_id, source, target, rel_type, timestamp, evidence_id
     conn.close()
     return rid
 
-def relations_from_record(data, ids):
-    # Structured rows: first two entity IDs become a relationship where possible.
+def relations_from_record(data, entity_ids):
+    # Only create relationships whose two semantic fields are explicit in the record.
     out = []
     timestamp = data.get("timestamp") or data.get("date")
-    if data.get("caller") and data.get("receiver") and len(ids) >= 2:
-        out.append({"source_id":ids[0],"target_id":ids[1],"type":"CALLED","timestamp":timestamp,"confidence":0.99})
-    elif data.get("sender") and data.get("receiver") and len(ids) >= 2:
-        out.append({"source_id":ids[0],"target_id":ids[1],"type":"TRANSFERRED","timestamp":timestamp,"confidence":0.99})
-    elif data.get("owner") and data.get("vehicle_id") and len(ids) >= 2:
-        out.append({"source_id":ids[0],"target_id":ids[1],"type":"OWNS","timestamp":timestamp,"confidence":0.98})
-    elif data.get("person") and data.get("location") and len(ids) >= 2:
-        out.append({"source_id":ids[0],"target_id":ids[1],"type":"VISITED","timestamp":timestamp,"confidence":0.95})
+
+    def add(source_key, target_key, rel_type, confidence):
+        source_id = entity_ids.get(source_key)
+        target_id = entity_ids.get(target_key)
+        if data.get(source_key) and data.get(target_key) and source_id and target_id and source_id != target_id:
+            out.append({"source_id":source_id,"target_id":target_id,"type":rel_type,"timestamp":timestamp,"confidence":confidence})
+
+    add("caller", "receiver", "CALLED", 0.99)
+    add("sender", "receiver", "TRANSFERRED", 0.99)
+    add("sender", "receiver_account", "TRANSFERRED", 0.99)
+    add("owner", "vehicle_id", "OWNS", 0.98)
+    add("owner", "registration", "OWNS", 0.98)
+    add("owner", "vehicle", "OWNS", 0.98)
+    add("person_id", "vehicle", "OWNS", 0.98)
+    add("person", "vehicle", "OWNS", 0.98)
+    add("name", "vehicle", "OWNS", 0.98)
+    add("person", "location", "VISITED", 0.95)
+    add("person_id", "location", "VISITED", 0.95)
+    add("vehicle_id", "location", "LOCATED_AT", 0.95)
+    add("registration", "location", "LOCATED_AT", 0.95)
+    add("vehicle", "location", "LOCATED_AT", 0.95)
+    add("person_id", "phone", "USES_PHONE", 0.98)
+    add("person", "phone", "USES_PHONE", 0.98)
+    add("name", "phone", "USES_PHONE", 0.98)
+    add("owner", "phone", "USES_PHONE", 0.98)
+    add("person_id", "account", "OWNS_ACCOUNT", 0.98)
+    add("person", "account", "OWNS_ACCOUNT", 0.98)
+    add("name", "account", "OWNS_ACCOUNT", 0.98)
+    add("owner", "account", "OWNS_ACCOUNT", 0.98)
     return out

@@ -32,6 +32,27 @@ def add_evidence(case_id, record_type, title, content, source_file, timestamp=No
     return eid
 
 
+def _infer_entity_type(key: str, val: str) -> str:
+    k = key.lower().strip()
+    v = str(val).strip()
+    if k in {"phone", "mobile", "phone_number", "contact", "msisdn", "imei"}:
+        return "PHONE"
+    if k in {"caller", "receiver"}:
+        digits = "".join(c for c in v if c.isdigit())
+        if len(digits) >= 7 and not any(c.isalpha() for c in v):
+            return "PHONE"
+        return "PERSON"
+    if k in {"vehicle_id", "registration", "vehicle", "car", "plate"}:
+        return "VEHICLE"
+    if k in {"location", "place", "city", "cell_tower"}:
+        return "LOCATION"
+    if k in {"account", "sender", "receiver_account", "bank_account", "account_id"}:
+        return "ACCOUNT"
+    if k in {"person_id", "person", "owner", "name", "suspect", "witness", "alias"}:
+        return "PERSON"
+    return "OTHER"
+
+
 def _ingest_structured_records(case_id: str, records: list[dict], original_name: str):
     created = 0
     for record in records:
@@ -47,18 +68,26 @@ def _ingest_structured_records(case_id: str, records: list[dict], original_name:
         entities = []
         if data.get("person_id") and data.get("name"):
             resolve_or_create_entity(case_id, "PERSON", data["name"])
-        for key in ["caller", "receiver", "sender", "receiver_account", "owner", "person_id", "person", "vehicle_id", "registration", "location", "account"]:
+        keys_to_check = [
+            "caller", "receiver", "sender", "receiver_account", "owner",
+            "person_id", "person", "name", "vehicle_id", "registration", "vehicle",
+            "location", "account", "phone", "mobile", "phone_number"
+        ]
+        for key in keys_to_check:
             if key == "person_id" and data.get("name"):
                 continue
             if data.get(key):
-                entity_type = "PERSON" if key in {"caller", "receiver", "person_id", "person", "owner"} else (
-                    "VEHICLE" if key in {"vehicle_id", "registration"} else (
-                        "LOCATION" if key == "location" else "OTHER"
-                    )
-                )
-                entities.append((entity_type, data[key]))
-        ids = [resolve_or_create_entity(case_id, entity_type, name) for entity_type, name in entities]
-        for relationship in relations_from_record(data, ids):
+                val = str(data[key]).strip()
+                entity_type = _infer_entity_type(key, val)
+                entities.append((entity_type, val))
+        [resolve_or_create_entity(case_id, entity_type, name) for entity_type, name in entities]
+        entity_ids = {}
+        for key in keys_to_check:
+            if data.get(key):
+                val = str(data[key]).strip()
+                entity_type = _infer_entity_type(key, val)
+                entity_ids[key] = resolve_or_create_entity(case_id, entity_type, val)
+        for relationship in relations_from_record(data, entity_ids):
             from ..relationship_extraction.extractor import store_relationship
 
             store_relationship(

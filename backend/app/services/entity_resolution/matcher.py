@@ -11,6 +11,10 @@ def resolve_or_create_entity(case_id: str, typ: str, name: str):
     best = None
     best_score = 0
     for r in rows:
+        if name.isdigit() or r["name"].strip().isdigit():
+            if name == r["name"].strip():
+                best, best_score = r, 1.0
+            continue
         score = ratio(name.lower(), r["name"].lower()) / 100
         if score > best_score:
             best, best_score = r, score

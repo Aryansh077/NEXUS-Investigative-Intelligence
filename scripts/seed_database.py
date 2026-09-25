@@ -18,7 +18,8 @@ conn.commit(); conn.close()
 
 data=ROOT/"data"/"synthetic"
 files=(
-    list((data/"cdr").glob("*.csv"))
+    [data/"people.csv"]
+    + list((data/"cdr").glob("*.csv"))
     + list((data/"financial").glob("*.csv"))
     + [data/"vehicles.csv", data/"locations.csv"]
     + list((data/"surveillance").glob("*.txt"))

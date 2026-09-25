@@ -1,0 +1,740 @@
+NEXUS - MENTOR PRESENTATION CONTENT
+===================================
+
+Purpose of this file
+--------------------
+This document contains ready-to-use content for a PowerPoint presentation about NEXUS.
+Each section can be used as one or more slides. The wording is intentionally clear for a
+mentor, evaluator, or project review.
+
+IMPORTANT PROJECT POSITIONING
+-----------------------------
+NEXUS is an evidence-first investigative decision-support prototype using synthetic data.
+It is not connected to real police, intelligence, telecom, financial, or surveillance systems.
+It must not be used with real criminal or personally identifying data.
+
+NEXUS does not prove criminality. Relationships, anomalies, graph scores, and model outputs
+are analytical leads that require human verification, source review, authorization, and
+applicable legal process.
+
+The current implementation contains ONE actual machine-learning algorithm:
+- Isolation Forest for unsupervised anomaly screening.
+
+The project also contains five important deterministic or algorithmic workflows:
+1. Rule-based NLP/entity extraction using regular expressions.
+2. Fuzzy entity resolution using RapidFuzz.
+3. Explicit relationship extraction from structured records and text.
+4. NetworkX graph analytics: degree, betweenness, communities, and shortest paths.
+5. Evidence-grounded retrieval Copilot using local case data and graph results.
+
+These six workflows may be presented as the six analytical workflows of NEXUS, but only
+Isolation Forest should be described as machine learning. This distinction is important for
+technical accuracy.
+
+
+SLIDE 1 - TITLE
+---------------
+Title:
+NEXUS - Evidence-First Investigative Intelligence
+
+Subtitle:
+A local synthetic-data prototype for connecting fragmented records, analyzing relationships,
+and supporting human-led investigation.
+
+Presenter points:
+- NEXUS brings multiple record types into one case workspace.
+- It links people, vehicles, locations, accounts, evidence, and events.
+- It provides visual graph analysis, timelines, anomaly screening, and source traceability.
+- The system is designed to assist investigators, not replace human judgment.
+
+
+SLIDE 2 - PROBLEM STATEMENT
+----------------------------
+Problem:
+Investigative information is often fragmented across different files and record types.
+An investigator may need to compare:
+- Call-detail records.
+- Financial transactions.
+- Person and vehicle records.
+- Location and visit events.
+- Reports, FIRs, TXT, PDF, and DOCX documents.
+- Relationship timelines and supporting evidence.
+
+Challenges:
+- The same entity may appear with different identifiers or names.
+- Important relationships may be hidden across separate records.
+- Large tables are difficult to analyze manually.
+- Anomalous patterns can be difficult to notice.
+- Analytical conclusions must remain connected to original evidence.
+
+NEXUS response:
+Create a case-scoped, evidence-linked workspace that normalizes source records, resolves
+entities, builds a relationship graph, supports temporal analysis, and highlights patterns
+for human review.
+
+
+SLIDE 3 - PROJECT OBJECTIVES
+----------------------------
+1. Ingest synthetic records from CSV, JSON, TXT, PDF, and DOCX sources.
+2. Store source evidence and preserve provenance.
+3. Extract entities such as people, vehicles, phones, money, dates, locations, and accounts.
+4. Resolve repeated references to the same entity.
+5. Build explicit relationships with timestamps, confidence, and evidence IDs.
+6. Display connections through a visual network graph.
+7. Provide timeline analysis for relationship events.
+8. Detect unusual network activity using Isolation Forest.
+9. Provide evidence-grounded local Copilot responses.
+10. Keep findings in a human-verification state.
+
+
+SLIDE 4 - TECHNOLOGY STACK
+---------------------------
+Frontend:
+- React 18.3.1: component-based user interface.
+- Vite 6: frontend development server and production bundling.
+- Axios: HTTP communication with the FastAPI backend.
+- Cytoscape.js: interactive network graph visualization.
+- Lucide React: interface icons.
+- CSS: responsive dashboard, graph, timeline, evidence, and map styling.
+
+Backend:
+- Python 3.11+ target runtime.
+- FastAPI 0.115.6: REST API and Swagger documentation.
+- Uvicorn: ASGI application server.
+- Pydantic 2.10.4: request validation and API models.
+- SQLite: local case, entity, relationship, evidence, anomaly, and audit persistence.
+- NetworkX 3.4.2: graph construction and graph analytics.
+- Pandas 2.2.3: CSV processing and feature tables.
+- NumPy 2.2.1: numerical processing.
+- scikit-learn 1.6.0: Isolation Forest anomaly model.
+- RapidFuzz 3.11.0: fuzzy entity matching.
+- python-docx: DOCX text extraction.
+- PyMuPDF: PDF text extraction.
+- pytest: backend automated tests.
+
+Deployment and supporting technology:
+- Docker and Docker Compose for local container demonstration.
+- Optional Neo4j schemas and queries are maintained for future distributed graph storage.
+- Environment variables configure database path, frontend origins, demo credentials, and frontend serving.
+
+
+SLIDE 5 - HIGH-LEVEL ARCHITECTURE
+---------------------------------
+Source files and synthetic data
+        |
+        v
+Ingestion and normalization
+        |
+        +--> Evidence store in SQLite
+        +--> Entity extraction and resolution
+        +--> Relationship and event extraction
+        +--> Feature engineering
+        +--> NetworkX graph analytics
+        +--> Isolation Forest anomaly screening
+        +--> Local evidence-grounded Copilot
+        |
+        v
+FastAPI JSON API
+        |
+        v
+React/Vite investigator workspace
+
+Architecture explanation:
+- Data enters through upload or seeded synthetic datasets.
+- The ingestion layer preserves the original record as evidence.
+- Entities and explicit relationships are created from the record fields.
+- Every relationship keeps its source evidence ID and timestamp where available.
+- The frontend requests case-scoped results from the backend API.
+- The investigator reviews the results and verifies findings.
+
+
+SLIDE 6 - DATA SOURCES AND DATA MODEL
+-------------------------------------
+Synthetic source categories:
+- People: person ID, name, alias, phone, account, vehicle.
+- CDR: caller, receiver, timestamp, duration, cell tower.
+- Financial: transaction ID, sender, receiver, amount, timestamp, location.
+- Vehicles: synthetic vehicle and registration data.
+- Locations: person, location, and visit timestamp.
+- Reports/FIR/surveillance: synthetic text evidence.
+
+SQLite entities:
+1. cases
+   - Isolated investigation workspace.
+   - Contains case ID, title, description, status, and creation time.
+
+2. entities
+   - Entity ID, case ID, type, name, and resolution metadata.
+   - Types include PERSON, VEHICLE, LOCATION, OTHER, DATE, and related categories.
+
+3. relationships
+   - Source entity, target entity, type, confidence, timestamp, source evidence ID,
+     verification state, and metadata.
+
+4. evidence
+   - Original source record, content, timestamp, file name, hash, and creation time.
+
+5. anomalies
+   - Entity, score, severity, reason, review state, reviewer, and review note.
+
+6. audit_logs
+   - Username, action, case ID, target, and timestamp.
+
+Case isolation:
+Every entity, relationship, evidence record, and anomaly is associated with a case ID.
+Records from one case are not intended to appear in another case workspace.
+
+
+SLIDE 7 - END-TO-END WORKFLOW
+-----------------------------
+Step 1 - Create or select a case workspace.
+Step 2 - Upload a CSV, JSON, TXT, PDF, or DOCX source file.
+Step 3 - Store the original source as evidence.
+Step 4 - Normalize fields and timestamps.
+Step 5 - Extract entities and semantic fields.
+Step 6 - Resolve repeated entities using exact or fuzzy matching rules.
+Step 7 - Create only explicit relationships supported by source fields.
+Step 8 - Store relationship type, timestamp, confidence, and evidence ID.
+Step 9 - Build the case graph.
+Step 10 - Calculate graph metrics and timelines.
+Step 11 - Build entity-level features for anomaly screening.
+Step 12 - Run Isolation Forest when enough entities are available.
+Step 13 - Explain anomaly leads using feature differences from the case baseline.
+Step 14 - Present graph, timeline, evidence, map, anomaly, and Copilot views.
+Step 15 - Investigator reviews the original evidence and records verification.
+
+
+SLIDE 8 - WORKFLOW 1: RULE-BASED NLP / ENTITY EXTRACTION
+----------------------------------------------------------
+Purpose:
+Extract recognizable entities from unstructured text documents.
+
+Technology:
+- Python regular expressions.
+- Deterministic patterns.
+- No external language model is required.
+
+Current patterns:
+- PERSON: capitalized one-to-three-word names.
+- VEHICLE: Indian-style registration patterns such as MH12AB1234.
+- PHONE: Indian phone-number pattern, including optional +91.
+- MONEY: rupee and Rs. amount patterns.
+- DATE: common numeric and month-name date patterns.
+
+Relationship extraction from text:
+- "Person A called Person B" becomes CALLED.
+- "Person A contacted Person B" becomes CALLED.
+- "Person A met Person B" becomes SEEN_WITH.
+- "Person A was seen with Person B" becomes SEEN_WITH.
+
+Strengths:
+- Fast, deterministic, explainable, and offline.
+- Easy to test and audit.
+
+Limitations:
+- It is not full natural-language understanding.
+- It may miss aliases, spelling variations, complex sentences, or ambiguous names.
+- Extracted relationships remain source-derived and require review.
+
+
+SLIDE 9 - WORKFLOW 2: ENTITY RESOLUTION
+-----------------------------------------
+Purpose:
+Decide whether two references represent the same entity.
+
+Technology:
+- RapidFuzz similarity ratio.
+- Exact matching for numeric identifiers such as phone numbers and account IDs.
+- Entity type and case scope are used during matching.
+
+Process:
+1. Normalize the incoming name or identifier.
+2. Search existing entities in the same case and type.
+3. For numeric identifiers, require exact equality.
+4. For text names, calculate fuzzy similarity.
+5. Reuse an entity when similarity reaches the configured threshold.
+6. Otherwise create a new entity.
+7. Store resolution confidence in metadata.
+
+Why exact numeric matching matters:
+Two phone numbers that differ by one digit are different identifiers. Fuzzy merging them
+would create false people and incorrect relationships.
+
+Example:
+- 9876500001 and 9876500002 must remain separate entities.
+- Rahul Sharma and R. Sharma may require a future alias-aware resolver.
+
+Limitations:
+- Fuzzy matching can still produce false positives for similar names.
+- Production deployment would need stronger identity keys, alias tables, review queues,
+and domain-specific matching rules.
+
+
+SLIDE 10 - WORKFLOW 3: RELATIONSHIP EXTRACTION
+-----------------------------------------------
+Purpose:
+Create graph edges only when the source record explicitly supports a semantic relationship.
+
+Structured relationship rules:
+- caller + receiver -> CALLED.
+- sender + receiver -> TRANSFERRED.
+- owner + vehicle_id or registration -> OWNS.
+- person/person_id + location -> VISITED.
+- vehicle_id/registration + location -> LOCATED_AT.
+
+Every relationship contains:
+- Relationship ID.
+- Case ID.
+- Source entity ID.
+- Target entity ID.
+- Relationship type.
+- Confidence value.
+- Timestamp or date.
+- Source evidence ID.
+- Verification state, initially pending.
+
+Important correctness rule:
+The system does not connect the first two arbitrary entities in a row. It maps relationships
+from named fields. For example, a financial record with sender, receiver, and location does
+not automatically prove that the sender visited the location.
+
+This protects the graph from false person-to-location and person-to-vehicle links.
+
+
+SLIDE 11 - WORKFLOW 4: GRAPH ANALYTICS
+---------------------------------------
+Purpose:
+Make indirect relationships and network structure easier to inspect.
+
+Technology:
+- NetworkX graph library.
+- FastAPI graph endpoints.
+- Cytoscape.js frontend visualization.
+
+Graph contents:
+- Nodes represent entities.
+- Edges represent source-backed relationships.
+- Edge metadata includes type, confidence, timestamp, evidence ID, and verification.
+
+Current metrics:
+1. Degree centrality
+   - Measures how many direct connections an entity has relative to the graph.
+
+2. Betweenness centrality
+   - Measures how often an entity lies on shortest paths between other entities.
+
+3. Connected communities/components
+   - Groups entities that are connected through graph relationships.
+
+4. Shortest paths
+   - Shows a possible relationship path between two entities with evidence details.
+
+Frontend graph behavior:
+- Person, vehicle, location, and other entity types have distinct visual styles.
+- Clicking an entity opens the inspector.
+- The inspector is intended to show source-linked details rather than conclusions.
+
+Interpretation warning:
+High centrality does not mean guilt or importance in a criminal sense. It only describes
+the structure of the recorded graph.
+
+
+SLIDE 12 - WORKFLOW 5: ISOLATION FOREST ANOMALY SCREENING
+-----------------------------------------------------------
+This is the actual machine-learning workflow.
+
+Purpose:
+Identify entities whose relationship activity differs from the case baseline.
+
+Algorithm:
+- Isolation Forest from scikit-learn.
+- Unsupervised learning.
+- No labeled training set is used in the current synthetic prototype.
+- 100 estimators.
+- Random state 42 for repeatability.
+- Contamination is set to auto.
+
+Input features per entity:
+1. interaction_count
+   - Number of outgoing relationships recorded for the entity.
+
+2. unique_contacts
+   - Number of distinct target entities.
+
+3. night_interaction_count
+   - Number of relationships occurring before 06:00 or at/after 22:00.
+
+4. mean_confidence
+   - Average relationship confidence for the entity.
+
+Feature workflow:
+1. Start with the case entity IDs.
+2. Read case relationships.
+3. Count outgoing interactions.
+4. Track unique targets.
+5. Parse timestamps and count night activity.
+6. Aggregate confidence values.
+7. Create a Pandas feature table.
+8. Fit Isolation Forest.
+9. Generate predictions and decision scores.
+10. Keep entities predicted as -1 as anomaly leads.
+11. Convert the score to a bounded 0-to-1 screening score.
+12. Generate human-readable reasons by comparing features with the case median.
+
+Possible explanation reasons:
+- Unusually high communication volume.
+- Unusually high number of unique contacts.
+- Unusual late-night activity.
+- Feature combination differs from the case baseline.
+
+Output:
+- Entity ID.
+- Screening score.
+- Medium or high severity.
+- Explanation reasons.
+- Feature values used by the model.
+
+Limitations:
+- Anomaly is not wrongdoing.
+- Synthetic data has no labeled ground truth.
+- The score is a screening aid, not an accuracy claim.
+- The current feature set is small.
+- Production use would require governance, validation, drift monitoring, fairness review,
+proper labels, and domain approval.
+
+
+SLIDE 13 - WORKFLOW 6: EVIDENCE-GROUNDED COPILOT
+-------------------------------------------------
+Purpose:
+Allow an investigator to ask simple questions using local case data.
+
+Technology:
+- Local Python service.
+- SQLite retrieval.
+- Existing graph path and graph metric functions.
+- No external AI model or external data connection is required.
+
+Supported reasoning patterns:
+1. Relationship/path questions
+   - Finds named entities in the question.
+   - Requests a graph path.
+   - Returns path steps and evidence IDs.
+
+2. Centrality questions
+   - Returns graph metrics for central or connecting entities.
+
+3. Anomaly questions
+   - Returns current case anomaly leads.
+
+4. General help questions
+   - Returns counts of relationships and evidence records.
+
+Grounding:
+- Local NEXUS graph.
+- Local SQLite evidence database.
+- Local case workspace only.
+
+Safety design:
+- Answers refer to evidence and analytical leads.
+- The Copilot does not claim criminality.
+- The investigator must inspect source evidence and verify the result.
+
+
+SLIDE 14 - FRONTEND USER EXPERIENCE
+------------------------------------
+Main screens:
+- Login.
+- Dashboard.
+- Cases.
+- Network Graph.
+- Location Map.
+- Entities.
+- Timeline.
+- Evidence Repository.
+- Anomalies.
+- Case Report.
+- Copilot.
+
+Dashboard:
+- Case status.
+- Entity count.
+- Evidence count.
+- Network component count.
+- Recent evidence.
+- Processing chain.
+
+Network Graph:
+- Visual entity relationship network.
+- Select a person, vehicle, location, or other entity.
+- Inspector shows source-linked details and relationship context.
+
+Location Map:
+- Shows recorded person-to-location evidence.
+- Lists who visited which place and when.
+- Uses known synthetic place coordinates only.
+- Does not claim live GPS from a phone number.
+
+Timeline:
+- Sorts relationship events by timestamp.
+- Shows source entity, relationship, target entity, confidence, and evidence ID.
+
+Evidence Repository:
+- Uploads supported source files.
+- Displays source content.
+- Shows hash and timestamp.
+- Allows authorized deletion with derived relationship cleanup.
+
+Anomalies:
+- Shows Isolation Forest screening leads.
+- Displays scores, severity, reasons, and evidence review actions.
+
+
+SLIDE 15 - BACKEND API
+----------------------
+System endpoints:
+- GET /api/health
+- GET /api/summary
+
+Authentication and cases:
+- POST /api/auth/login
+- POST /api/auth/logout
+- GET /api/cases
+- GET /api/cases/{case_id}
+- POST /api/cases
+
+Entities and graph:
+- GET /api/entities/{case_id}
+- GET /api/graph/{case_id}
+- GET /api/graph/{case_id}/metrics
+- GET /api/graph/{case_id}/path?source=...&target=...
+
+Time, evidence, and analysis:
+- GET /api/timeline/{case_id}
+- GET /api/evidence/{case_id}
+- DELETE /api/evidence/{case_id}/{evidence_id}
+- GET /api/anomalies/{case_id}
+
+Copilot and ingestion:
+- POST /api/copilot/ask
+- POST /api/ingestion/{case_id}
+
+Audit:
+- GET /api/audit
+- GET /api/audit/{case_id}
+
+API documentation:
+- Swagger UI is available at http://localhost:8000/docs when the backend is running.
+
+
+SLIDE 16 - SECURITY AND GOVERNANCE
+----------------------------------
+Current prototype controls:
+- Local demo authentication.
+- Environment-variable configurable demo credentials.
+- Role/permission scaffolding for investigator, supervisor, and admin.
+- Case-scoped data access design.
+- Evidence hashes for integrity reference.
+- Audit-log scaffolding.
+- Pending verification state for relationships and findings.
+- Synthetic data only.
+
+Demo login:
+- Username: investigator.
+- Password: nexus-demo.
+
+These credentials are intentionally for demonstration only.
+
+Production requirements not implemented yet:
+- Real identity provider and multi-factor authentication.
+- Strong session/token management.
+- Production RBAC/ABAC enforcement at every endpoint.
+- Encryption in transit and at rest.
+- Secrets manager.
+- Key rotation.
+- Network isolation.
+- Secure retention and deletion policies.
+- Model governance and audit review.
+- Authorized institutional data connectors.
+
+
+SLIDE 17 - EVIDENCE AND VERIFICATION MODEL
+-------------------------------------------
+NEXUS follows an evidence-first principle:
+- Every uploaded source is preserved as an evidence record.
+- Relationships keep the source evidence ID.
+- Timestamps are retained where supplied by the source.
+- Confidence indicates extraction/resolution confidence, not truth.
+- Verification begins in a pending state.
+- Investigators must review source material before treating a finding as reliable.
+
+Correct interpretation examples:
+- Correct: "The record contains a CALLED relationship between two identifiers at this time."
+- Incorrect: "The person is criminal because the graph shows a call."
+
+- Correct: "The model marked this activity as unusual relative to the case baseline."
+- Incorrect: "The model proved illegal behavior."
+
+
+SLIDE 18 - DEMONSTRATION SCRIPT
+-------------------------------
+Demo sequence for mentor presentation:
+
+1. Open the login page.
+   - Use investigator / nexus-demo.
+
+2. Open Dashboard.
+   - Explain case status, entities, evidence, and network components.
+
+3. Open Evidence Repository.
+   - Upload or select a synthetic CDR or transaction file.
+   - Show source content, timestamp, source file, and hash.
+
+4. Open Entities.
+   - Show resolved people, vehicles, locations, and identifiers.
+   - Explain that numeric identifiers require exact matching.
+
+5. Open Network Graph.
+   - Select a person node.
+   - Explain direct relationships and source evidence.
+   - Explain that graph structure is not proof of criminality.
+
+6. Open Location Map.
+   - Filter by a person.
+   - Show which person visited which recorded location and the timestamp.
+   - Explain that synthetic place coordinates are used and phone numbers do not provide live GPS.
+
+7. Open Timeline.
+   - Show relationships in chronological order.
+
+8. Open Anomalies.
+   - Explain the four features.
+   - Show Isolation Forest score and human-readable reason.
+   - State clearly that this is an unsupervised screening lead.
+
+9. Open Copilot.
+   - Ask which entities are connected or which patterns are unusual.
+   - Show that answers are grounded in local graph/evidence data.
+
+10. Open Case Report.
+    - Show how entities, relationships, evidence, anomalies, and investigator notes can be
+      summarized for review.
+
+
+SLIDE 19 - TESTING AND VALIDATION
+----------------------------------
+Backend tests cover:
+- Health endpoint.
+- Authentication behavior.
+- Database initialization and persistence.
+- JSON/structured ingestion.
+- Ingestion-created relationships.
+- Anomaly behavior.
+
+Current verification commands:
+- Backend tests: python -m pytest tests -q
+- Python syntax check: python -m py_compile ...
+- Frontend build: npm run build
+
+Expected backend test result in the current prototype:
+- 8 tests passing, with framework deprecation warnings possible.
+
+Frontend validation:
+- Vite production build completes successfully.
+- A chunk-size warning may appear because Cytoscape and the application bundle are large.
+- The warning is a performance optimization opportunity, not a functional failure.
+
+
+SLIDE 20 - CURRENT LIMITATIONS
+------------------------------
+1. Data is synthetic only.
+2. There is no connection to real institutional systems.
+3. The current ML model is unsupervised and has no labeled accuracy claim.
+4. The NLP extractor is regex/rule based.
+5. Entity resolution is not a complete identity-resolution system.
+6. Location data is evidence-based and may contain place names without GPS coordinates.
+7. Phone numbers alone are not used as live location tracking.
+8. Demo authentication is not production security.
+9. SQLite is appropriate for a local prototype, not necessarily distributed production scale.
+10. Neo4j assets are future-deployment scaffolding, not the active graph database.
+11. Human verification and legal authorization are required for real-world use.
+
+
+SLIDE 21 - FUTURE ENHANCEMENTS
+------------------------------
+Data and integration:
+- Add authorized connectors with strict governance.
+- Support richer schemas and normalized identifiers.
+- Add data quality checks and ingestion error reports.
+
+Entity intelligence:
+- Alias dictionaries.
+- Domain-specific identity resolution.
+- Investigator review queue for ambiguous matches.
+- Cross-case access controls where legally authorized.
+
+Machine learning:
+- Add labeled evaluation data.
+- Compare Isolation Forest with Local Outlier Factor and One-Class SVM.
+- Add supervised classification only with approved labels and governance.
+- Add temporal, geographic, and sequence features.
+- Monitor drift and calibration.
+- Provide model cards and explainability reports.
+
+Graph:
+- Move to Neo4j or another governed graph platform for larger deployments.
+- Add richer temporal graph queries.
+- Add edge-level verification workflows.
+- Add graph snapshots and change history.
+
+Security:
+- Enterprise identity provider.
+- MFA.
+- Encryption and secrets management.
+- Formal audit and retention policies.
+
+User experience:
+- Exportable slide/report summaries.
+- Better map geocoding only for authorized, verified location data.
+- Accessibility and multilingual support.
+
+
+SLIDE 22 - CONCLUSION
+---------------------
+NEXUS demonstrates how fragmented synthetic records can be transformed into an evidence-
+linked investigative workspace.
+
+The system combines:
+- FastAPI APIs.
+- React/Vite interface.
+- SQLite persistence.
+- Pandas feature engineering.
+- NetworkX graph analytics.
+- RapidFuzz entity resolution.
+- Rule-based NLP extraction.
+- scikit-learn Isolation Forest anomaly screening.
+- Evidence-grounded local Copilot.
+- Human verification and audit scaffolding.
+
+The main value is traceability:
+An investigator can move from a visual relationship or anomaly lead back to the timestamp,
+source record, evidence ID, and original content.
+
+Final message:
+NEXUS is a decision-support prototype. It organizes evidence and highlights patterns; it
+does not make accusations or replace investigators, legal process, or institutional review.
+
+
+SHORT TECHNICAL SUMMARY FOR FINAL PPT SLIDE
+--------------------------------------------
+Frontend: React + Vite + Cytoscape.js + Axios + Lucide React.
+Backend: FastAPI + Uvicorn + Pydantic.
+Storage: SQLite with case-scoped entities, relationships, evidence, anomalies, and audit logs.
+Analytics: NetworkX degree, betweenness, communities, and shortest paths.
+Extraction: Regex-based entity and relationship extraction.
+Resolution: RapidFuzz fuzzy matching with exact numeric identifier protection.
+Machine learning: scikit-learn Isolation Forest with four engineered features.
+Data processing: Pandas and NumPy.
+Documents: PDF, DOCX, TXT, CSV, and JSON ingestion.
+Validation: pytest backend tests and Vite production build.
+Deployment: Docker Compose for local demonstration.
+Data policy: Synthetic data only; findings require human verification.
