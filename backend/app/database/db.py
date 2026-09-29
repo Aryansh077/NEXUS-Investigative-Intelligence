@@ -2,6 +2,7 @@ import os
 import sqlite3
 from pathlib import Path
 from ..config import DATABASE_PATH
+from .connection import init_database
 
 DB_PATH = DATABASE_PATH
 
@@ -12,6 +13,10 @@ def get_conn():
     return conn
 
 def init_db():
+    # Initialize all SQLAlchemy tables (cases, complaints, accounts, transactions, atms, predictions, alerts, etc.)
+    init_database()
+
+    # Ensure backward-compatible SQLite columns for existing anomalies table
     conn = get_conn()
     conn.executescript("""
     CREATE TABLE IF NOT EXISTS cases (
@@ -78,6 +83,18 @@ def init_db():
         timestamp TEXT
     );
     """)
+    # Ensure backward-compatible SQLite columns for existing cases table
+    case_columns = {row[1] for row in conn.execute("PRAGMA table_info(cases)").fetchall()}
+    for column, definition in {
+        "category": "TEXT DEFAULT 'Cybercrime'",
+        "syndicate_name": "TEXT",
+        "city": "TEXT",
+        "primary_cluster": "TEXT",
+    }.items():
+        if column not in case_columns:
+            conn.execute(f"ALTER TABLE cases ADD COLUMN {column} {definition}")
+
+    # Ensure backward-compatible SQLite columns for existing anomalies table
     anomaly_columns = {row[1] for row in conn.execute("PRAGMA table_info(anomalies)").fetchall()}
     for column, definition in {
         "verification": "TEXT DEFAULT 'pending'",
@@ -87,5 +104,10 @@ def init_db():
     }.items():
         if column not in anomaly_columns:
             conn.execute(f"ALTER TABLE anomalies ADD COLUMN {column} {definition}")
+
+    # Ensure backward-compatible SQLite columns for audit_logs table
+    audit_columns = {row[1] for row in conn.execute("PRAGMA table_info(audit_logs)").fetchall()}
+    if "details_json" not in audit_columns:
+        conn.execute("ALTER TABLE audit_logs ADD COLUMN details_json TEXT DEFAULT '{}'")
     conn.commit()
     conn.close()

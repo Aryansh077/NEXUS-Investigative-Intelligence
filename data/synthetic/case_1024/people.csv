@@ -1,0 +1,9 @@
+person_id,name,alias,phone,account,vehicle,role
+P101,Rohan Kapoor,R. Kapoor,9811000101,ACC-1024-01,DL01XY1111,Cryptocurrency Broker
+P102,Ananya Sen,A. Sen,9811000102,ACC-1024-02,DL01XY1222,Malware Developer
+P103,Deepak Malhotra,D. Malhotra,9811000103,ACC-1024-03,DL01XY1333,Mule Account Networker
+P104,Tanya Singhania,T. Singhania,9811000104,ACC-1024-04,DL01XY1444,Shell Corp Director
+P105,Kabir Varma,K. Varma,9811000105,ACC-1024-05,DL01XY1555,Server Infrastructure Host
+P106,Meera Nair,M. Nair,9811000106,ACC-1024-06,DL01XY1666,Escrow Intermediary
+P107,Aditya Saxena,A. Saxena,9811000107,ACC-1024-07,DL01XY1777,VPN Gateway Operator
+P108,Ritu Choudhury,R. Choudhury,9811000108,ACC-1024-08,DL01XY1888,Digital Assets Cashier

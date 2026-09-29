@@ -1,0 +1,58 @@
+atm_id,cluster_id,bank_name,ifsc,location_name,district,city,latitude,longitude,daily_cash_limit,is_operational,cctv_available,historical_fraud_count
+ATM-101,DEL-CP,Axis Bank,UTIB0000678,"Axis Bank ATM, Connaught Place Financial Circle Branch #1",New Delhi,Delhi,28.628439,77.212374,25000,YES,NO,37
+ATM-102,DEL-CP,HDFC Bank,HDFC0000456,"HDFC Bank ATM, Connaught Place Financial Circle Branch #2",New Delhi,Delhi,28.632586,77.211081,25000,YES,YES,17
+ATM-103,DEL-CP,State Bank of India,SBIN0001234,"State Bank of India ATM, Connaught Place Financial Circle Branch #3",New Delhi,Delhi,28.632235,77.219292,100000,YES,YES,31
+ATM-104,DEL-CP,Axis Bank,UTIB0000678,"Axis Bank ATM, Connaught Place Financial Circle Branch #4",New Delhi,Delhi,28.635213,77.210778,40000,YES,NO,30
+ATM-105,DEL-NP,Punjab National Bank,PUNB0002345,"Punjab National Bank ATM, Nehru Place Commercial Corridor Branch #1",South Delhi,Delhi,28.554687,77.251339,25000,YES,YES,9
+ATM-106,DEL-NP,Bank of Baroda,BARB0003456,"Bank of Baroda ATM, Nehru Place Commercial Corridor Branch #2",South Delhi,Delhi,28.55337,77.254545,25000,YES,NO,32
+ATM-107,DEL-NP,HDFC Bank,HDFC0000456,"HDFC Bank ATM, Nehru Place Commercial Corridor Branch #3",South Delhi,Delhi,28.554877,77.251842,50000,YES,NO,26
+ATM-108,DEL-NP,Punjab National Bank,PUNB0002345,"Punjab National Bank ATM, Nehru Place Commercial Corridor Branch #4",South Delhi,Delhi,28.551655,77.24785,40000,YES,YES,8
+ATM-109,DEL-ROH,Canara Bank,CNRB0004567,"Canara Bank ATM, Rohini Sector 7 & 8 Cluster Branch #1",North West Delhi,Delhi,28.701436,77.104128,50000,YES,YES,26
+ATM-110,DEL-ROH,Bank of Baroda,BARB0003456,"Bank of Baroda ATM, Rohini Sector 7 & 8 Cluster Branch #2",North West Delhi,Delhi,28.700614,77.099704,25000,YES,NO,13
+ATM-111,DEL-ROH,Punjab National Bank,PUNB0002345,"Punjab National Bank ATM, Rohini Sector 7 & 8 Cluster Branch #3",North West Delhi,Delhi,28.700061,77.101053,40000,YES,NO,23
+ATM-112,DEL-ROH,State Bank of India,SBIN0001234,"State Bank of India ATM, Rohini Sector 7 & 8 Cluster Branch #4",North West Delhi,Delhi,28.700849,77.096885,50000,YES,YES,20
+ATM-113,NCR-NOI18,Bank of Baroda,BARB0003456,"Bank of Baroda ATM, Noida Sector 18 Commercial Hub Branch #1",Gautam Buddha Nagar,Noida,28.567352,77.326091,100000,YES,YES,19
+ATM-114,NCR-NOI18,ICICI Bank,ICIC0000789,"ICICI Bank ATM, Noida Sector 18 Commercial Hub Branch #2",Gautam Buddha Nagar,Noida,28.56776,77.326836,50000,YES,NO,30
+ATM-115,NCR-NOI18,Canara Bank,CNRB0004567,"Canara Bank ATM, Noida Sector 18 Commercial Hub Branch #3",Gautam Buddha Nagar,Noida,28.569144,77.332068,40000,YES,NO,34
+ATM-116,NCR-NOI18,HDFC Bank,HDFC0000456,"HDFC Bank ATM, Noida Sector 18 Commercial Hub Branch #4",Gautam Buddha Nagar,Noida,28.573869,77.330433,40000,YES,NO,13
+ATM-117,NCR-NOI18,Canara Bank,CNRB0004567,"Canara Bank ATM, Noida Sector 18 Commercial Hub Branch #5",Gautam Buddha Nagar,Noida,28.571957,77.324717,100000,YES,NO,19
+ATM-118,NCR-NOI18,State Bank of India,SBIN0001234,"State Bank of India ATM, Noida Sector 18 Commercial Hub Branch #6",Gautam Buddha Nagar,Noida,28.572963,77.321475,50000,YES,NO,24
+ATM-119,NCR-GURG,ICICI Bank,ICIC0000789,"ICICI Bank ATM, Cyber City & DLF Phase 2 Branch #1",Gurugram,Gurugram,28.490145,77.095246,50000,YES,NO,14
+ATM-120,NCR-GURG,HDFC Bank,HDFC0000456,"HDFC Bank ATM, Cyber City & DLF Phase 2 Branch #2",Gurugram,Gurugram,28.495146,77.087381,40000,YES,YES,26
+ATM-121,NCR-GURG,ICICI Bank,ICIC0000789,"ICICI Bank ATM, Cyber City & DLF Phase 2 Branch #3",Gurugram,Gurugram,28.491173,77.093144,25000,YES,NO,23
+ATM-122,NCR-GURG,Kotak Mahindra Bank,KKBK0005678,"Kotak Mahindra Bank ATM, Cyber City & DLF Phase 2 Branch #4",Gurugram,Gurugram,28.484934,77.094949,50000,YES,YES,6
+ATM-123,NCR-GURG,Punjab National Bank,PUNB0002345,"Punjab National Bank ATM, Cyber City & DLF Phase 2 Branch #5",Gurugram,Gurugram,28.495236,77.095163,25000,YES,NO,34
+ATM-124,MUM-BKC,ICICI Bank,ICIC0000789,"ICICI Bank ATM, Bandra Kurla Complex Tech Zone Branch #1",Mumbai Suburban,Mumbai,19.061241,72.868203,40000,YES,YES,36
+ATM-125,MUM-BKC,Canara Bank,CNRB0004567,"Canara Bank ATM, Bandra Kurla Complex Tech Zone Branch #2",Mumbai Suburban,Mumbai,19.071272,72.873647,40000,YES,NO,22
+ATM-126,MUM-BKC,Canara Bank,CNRB0004567,"Canara Bank ATM, Bandra Kurla Complex Tech Zone Branch #3",Mumbai Suburban,Mumbai,19.071642,72.870299,100000,YES,NO,31
+ATM-127,MUM-BKC,HDFC Bank,HDFC0000456,"HDFC Bank ATM, Bandra Kurla Complex Tech Zone Branch #4",Mumbai Suburban,Mumbai,19.062675,72.863268,25000,YES,NO,38
+ATM-128,MUM-BKC,Punjab National Bank,PUNB0002345,"Punjab National Bank ATM, Bandra Kurla Complex Tech Zone Branch #5",Mumbai Suburban,Mumbai,19.066761,72.862586,25000,YES,YES,7
+ATM-129,MUM-BKC,State Bank of India,SBIN0001234,"State Bank of India ATM, Bandra Kurla Complex Tech Zone Branch #6",Mumbai Suburban,Mumbai,19.070016,72.86335,40000,YES,YES,34
+ATM-130,MUM-AND,Kotak Mahindra Bank,KKBK0005678,"Kotak Mahindra Bank ATM, Andheri West Lokhandwala Hub Branch #1",Mumbai Suburban,Mumbai,19.133216,72.827376,100000,YES,YES,9
+ATM-131,MUM-AND,HDFC Bank,HDFC0000456,"HDFC Bank ATM, Andheri West Lokhandwala Hub Branch #2",Mumbai Suburban,Mumbai,19.138208,72.825952,100000,YES,YES,6
+ATM-132,MUM-AND,HDFC Bank,HDFC0000456,"HDFC Bank ATM, Andheri West Lokhandwala Hub Branch #3",Mumbai Suburban,Mumbai,19.131027,72.830439,25000,YES,YES,15
+ATM-133,MUM-AND,Punjab National Bank,PUNB0002345,"Punjab National Bank ATM, Andheri West Lokhandwala Hub Branch #4",Mumbai Suburban,Mumbai,19.136735,72.823382,40000,YES,YES,32
+ATM-134,MUM-DAD,Kotak Mahindra Bank,KKBK0005678,"Kotak Mahindra Bank ATM, Dadar TT Circle Corridor Branch #1",Mumbai City,Mumbai,19.021496,72.852072,25000,YES,YES,37
+ATM-135,MUM-DAD,State Bank of India,SBIN0001234,"State Bank of India ATM, Dadar TT Circle Corridor Branch #2",Mumbai City,Mumbai,19.023428,72.852916,40000,YES,YES,29
+ATM-136,MUM-DAD,Kotak Mahindra Bank,KKBK0005678,"Kotak Mahindra Bank ATM, Dadar TT Circle Corridor Branch #3",Mumbai City,Mumbai,19.017576,72.852176,25000,YES,YES,27
+ATM-137,MUM-DAD,State Bank of India,SBIN0001234,"State Bank of India ATM, Dadar TT Circle Corridor Branch #4",Mumbai City,Mumbai,19.023624,72.844982,100000,YES,YES,30
+ATM-138,PUN-HINJ,Kotak Mahindra Bank,KKBK0005678,"Kotak Mahindra Bank ATM, Hinjewadi Phase 1 & 2 Junction Branch #1",Pune,Pune,18.587158,73.73646,25000,YES,NO,37
+ATM-139,PUN-HINJ,State Bank of India,SBIN0001234,"State Bank of India ATM, Hinjewadi Phase 1 & 2 Junction Branch #2",Pune,Pune,18.594276,73.733586,100000,YES,NO,36
+ATM-140,PUN-HINJ,ICICI Bank,ICIC0000789,"ICICI Bank ATM, Hinjewadi Phase 1 & 2 Junction Branch #3",Pune,Pune,18.585983,73.738994,40000,YES,YES,7
+ATM-141,PUN-HINJ,Punjab National Bank,PUNB0002345,"Punjab National Bank ATM, Hinjewadi Phase 1 & 2 Junction Branch #4",Pune,Pune,18.590145,73.744199,40000,YES,NO,5
+ATM-142,PUN-HINJ,HDFC Bank,HDFC0000456,"HDFC Bank ATM, Hinjewadi Phase 1 & 2 Junction Branch #5",Pune,Pune,18.590331,73.739904,50000,YES,YES,16
+ATM-143,PUN-HINJ,Bank of Baroda,BARB0003456,"Bank of Baroda ATM, Hinjewadi Phase 1 & 2 Junction Branch #6",Pune,Pune,18.588164,73.737649,50000,YES,YES,23
+ATM-144,PUN-KOTH,State Bank of India,SBIN0001234,"State Bank of India ATM, Kothrud Paud Road Corridor Branch #1",Pune,Pune,18.506899,73.813681,25000,YES,YES,37
+ATM-145,PUN-KOTH,Punjab National Bank,PUNB0002345,"Punjab National Bank ATM, Kothrud Paud Road Corridor Branch #2",Pune,Pune,18.507471,73.803289,50000,YES,YES,18
+ATM-146,PUN-KOTH,Bank of Baroda,BARB0003456,"Bank of Baroda ATM, Kothrud Paud Road Corridor Branch #3",Pune,Pune,18.50482,73.806958,50000,YES,NO,36
+ATM-147,PUN-KOTH,State Bank of India,SBIN0001234,"State Bank of India ATM, Kothrud Paud Road Corridor Branch #4",Pune,Pune,18.509414,73.808355,25000,YES,YES,19
+ATM-148,BLR-KOR,ICICI Bank,ICIC0000789,"ICICI Bank ATM, Koramangala 80ft Road Cluster Branch #1",Bengaluru Urban,Bengaluru,12.932468,77.625758,50000,YES,YES,19
+ATM-149,BLR-KOR,Kotak Mahindra Bank,KKBK0005678,"Kotak Mahindra Bank ATM, Koramangala 80ft Road Cluster Branch #2",Bengaluru Urban,Bengaluru,12.932213,77.629398,25000,YES,YES,30
+ATM-150,BLR-KOR,Axis Bank,UTIB0000678,"Axis Bank ATM, Koramangala 80ft Road Cluster Branch #3",Bengaluru Urban,Bengaluru,12.929729,77.622503,40000,YES,NO,19
+ATM-151,BLR-KOR,ICICI Bank,ICIC0000789,"ICICI Bank ATM, Koramangala 80ft Road Cluster Branch #4",Bengaluru Urban,Bengaluru,12.938095,77.62512,100000,YES,NO,3
+ATM-152,BLR-IND,ICICI Bank,ICIC0000789,"ICICI Bank ATM, Indiranagar 100ft Road Belt Branch #1",Bengaluru Urban,Bengaluru,12.978947,77.644815,40000,YES,YES,11
+ATM-153,BLR-IND,State Bank of India,SBIN0001234,"State Bank of India ATM, Indiranagar 100ft Road Belt Branch #2",Bengaluru Urban,Bengaluru,12.976099,77.645588,25000,YES,YES,16
+ATM-154,BLR-IND,Punjab National Bank,PUNB0002345,"Punjab National Bank ATM, Indiranagar 100ft Road Belt Branch #3",Bengaluru Urban,Bengaluru,12.980403,77.639044,100000,YES,NO,12
+ATM-155,BLR-IND,Punjab National Bank,PUNB0002345,"Punjab National Bank ATM, Indiranagar 100ft Road Belt Branch #4",Bengaluru Urban,Bengaluru,12.982775,77.646514,40000,YES,YES,4
+ATM-156,BLR-IND,ICICI Bank,ICIC0000789,"ICICI Bank ATM, Indiranagar 100ft Road Belt Branch #5",Bengaluru Urban,Bengaluru,12.981239,77.638786,100000,YES,NO,18
+ATM-157,BLR-IND,Axis Bank,UTIB0000678,"Axis Bank ATM, Indiranagar 100ft Road Belt Branch #6",Bengaluru Urban,Bengaluru,12.97431,77.643215,100000,YES,YES,33

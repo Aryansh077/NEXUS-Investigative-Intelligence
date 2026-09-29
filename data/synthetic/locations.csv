@@ -1,6 +1,13 @@
-event_id,person,location,timestamp
-L001,P001,Pune,2026-05-18T00:00
-L002,P002,Pune,2026-05-19T00:00
-L003,P003,Pune,2026-05-20T00:00
-L004,P005,Pune,2026-05-21T00:00
-L005,P007,Pune,2026-05-22T00:00
+cluster_id,cluster_name,district,city,center_lat,center_lon,risk_tier,historical_crime_density
+DEL-CP,Connaught Place Financial Circle,New Delhi,Delhi,28.6315,77.2167,HIGH,0.825
+DEL-NP,Nehru Place Commercial Corridor,South Delhi,Delhi,28.5492,77.2533,CRITICAL,0.696
+DEL-ROH,Rohini Sector 7 & 8 Cluster,North West Delhi,Delhi,28.7041,77.1025,HIGH,0.918
+NCR-NOI18,Noida Sector 18 Commercial Hub,Gautam Buddha Nagar,Noida,28.5708,77.3261,CRITICAL,0.578
+NCR-GURG,Cyber City & DLF Phase 2,Gurugram,Gurugram,28.4907,77.0898,MEDIUM,0.598
+MUM-BKC,Bandra Kurla Complex Tech Zone,Mumbai Suburban,Mumbai,19.0657,72.8685,HIGH,0.901
+MUM-AND,Andheri West Lokhandwala Hub,Mumbai Suburban,Mumbai,19.1363,72.8277,CRITICAL,0.642
+MUM-DAD,Dadar TT Circle Corridor,Mumbai City,Mumbai,19.0178,72.8478,MEDIUM,0.657
+PUN-HINJ,Hinjewadi Phase 1 & 2 Junction,Pune,Pune,18.5913,73.7389,HIGH,0.85
+PUN-KOTH,Kothrud Paud Road Corridor,Pune,Pune,18.5074,73.8077,MEDIUM,0.949
+BLR-KOR,Koramangala 80ft Road Cluster,Bengaluru Urban,Bengaluru,12.9352,77.6245,CRITICAL,0.6
+BLR-IND,Indiranagar 100ft Road Belt,Bengaluru Urban,Bengaluru,12.9784,77.6408,HIGH,0.598

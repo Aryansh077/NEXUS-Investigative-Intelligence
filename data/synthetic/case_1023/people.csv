@@ -1,0 +1,9 @@
+person_id,name,alias,phone,account,vehicle,role
+P001,Rahul Sharma,R. Sharma,9876500001,ACC-1023-01,MH12AB1111,Primary Coordinator
+P002,Amit Verma,A. Verma,9876500002,ACC-1023-02,MH12AB1222,Field Operative
+P003,Sameer Khan,S. Khan,9876500003,ACC-1023-03,MH12AB1333,Logistics Handler
+P004,Neha Patil,N. Patil,9876500004,ACC-1023-04,MH12AB1444,Financial Custodian
+P005,Vikram Joshi,V. Joshi,9876500005,ACC-1023-05,MH12AB1555,Technical Associate
+P006,Priya Mehta,P. Mehta,9876500006,ACC-1023-06,MH12AB1666,Transport Operator
+P007,Arjun Rao,A. Rao,9876500007,ACC-1023-07,MH12AB1777,Regional Contact
+P008,Karan Shah,K. Shah,9876500008,ACC-1023-08,MH12AB1888,Asset Holder

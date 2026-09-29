@@ -1,0 +1,16 @@
+case_id,title,category,syndicate_name,city,primary_cluster,status,created_at
+CASE-1021,Operation Apex: Card Skimming / OTP Fraud Infiltration,Card Skimming / OTP Fraud,Apex Mumbai Laundering Ring,Mumbai,MUM-AND,Closed,2026-05-08T09:30:00
+CASE-1022,Operation Apex: Part-Time Job Scam Infiltration,Part-Time Job Scam,Apex Mumbai Laundering Ring,Mumbai,MUM-AND,Closed,2026-05-18T09:30:00
+CASE-1023,Operation Falcon: Phishing / APK Fraud Infiltration,Phishing / APK Fraud,Falcon Rohini Group,Delhi,DEL-ROH,Closed,2026-05-25T09:30:00
+CASE-1024,Operation Sahyadri: Investment Scam Infiltration,Investment Scam,Sahyadri Pune Syndicate,Pune,PUN-HINJ,Closed,2026-05-29T09:30:00
+CASE-1025,Operation Sahyadri: Card Skimming / OTP Fraud Infiltration,Card Skimming / OTP Fraud,Sahyadri Pune Syndicate,Pune,PUN-HINJ,Closed,2026-06-08T09:30:00
+CASE-1026,Operation Silicon: Loan App Extortion Infiltration,Loan App Extortion,Silicon Route Cyber Cell,Bengaluru,BLR-KOR,Closed,2026-06-15T09:30:00
+CASE-1027,Operation Falcon: Loan App Extortion Infiltration,Loan App Extortion,Falcon Rohini Group,Delhi,DEL-ROH,Closed,2026-06-21T09:30:00
+CASE-1028,Operation Apex: Card Skimming / OTP Fraud Infiltration,Card Skimming / OTP Fraud,Apex Mumbai Laundering Ring,Mumbai,MUM-AND,Closed,2026-06-28T09:30:00
+CASE-1029,Operation ViperNet: Phishing / APK Fraud Infiltration,Phishing / APK Fraud,ViperNet NCR Ring,Delhi,DEL-NP,Closed,2026-07-05T09:30:00
+CASE-1030,Operation Sahyadri: Phishing / APK Fraud Infiltration,Phishing / APK Fraud,Sahyadri Pune Syndicate,Pune,PUN-HINJ,Closed,2026-07-13T09:30:00
+CASE-1031,Operation Sahyadri: Card Skimming / OTP Fraud Infiltration,Card Skimming / OTP Fraud,Sahyadri Pune Syndicate,Pune,PUN-HINJ,Active,2026-07-20T09:30:00
+CASE-1032,Operation Silicon: Phishing / APK Fraud Infiltration,Phishing / APK Fraud,Silicon Route Cyber Cell,Bengaluru,BLR-KOR,Active,2026-07-26T09:30:00
+CASE-1033,Operation Sahyadri: Card Skimming / OTP Fraud Infiltration,Card Skimming / OTP Fraud,Sahyadri Pune Syndicate,Pune,PUN-HINJ,Active,2026-08-02T09:30:00
+CASE-1034,Operation ViperNet: Part-Time Job Scam Infiltration,Part-Time Job Scam,ViperNet NCR Ring,Delhi,DEL-NP,Active,2026-08-07T09:30:00
+CASE-1035,Operation ViperNet: Digital Arrest / Impersonation Infiltration,Digital Arrest / Impersonation,ViperNet NCR Ring,Delhi,DEL-NP,Active,2026-08-14T09:30:00

@@ -1,0 +1,57 @@
+{
+  "generated_at": "2026-09-29T12:49:17Z",
+  "models": {
+    "LogisticRegression": {
+      "precision": 0.8182,
+      "recall": 0.8182,
+      "f1": 0.8182,
+      "roc_auc": 0.8956,
+      "pr_auc": 0.7101,
+      "brier_score": 0.0559,
+      "top1_hit_rate": 0.8182,
+      "top3_hit_rate": 0.8182,
+      "top5_hit_rate": 0.8182,
+      "evaluated_cases": 11
+    },
+    "RandomForest": {
+      "precision": 0.75,
+      "recall": 0.8182,
+      "f1": 0.7826,
+      "roc_auc": 0.8866,
+      "pr_auc": 0.7138,
+      "brier_score": 0.036,
+      "top1_hit_rate": 0.8182,
+      "top3_hit_rate": 0.8182,
+      "top5_hit_rate": 0.8182,
+      "evaluated_cases": 11
+    },
+    "LightGBM": {
+      "precision": 0.6923,
+      "recall": 0.8182,
+      "f1": 0.75,
+      "roc_auc": 0.9286,
+      "pr_auc": 0.7586,
+      "brier_score": 0.0406,
+      "avg_inference_latency_ms": 2.052,
+      "top1_hit_rate": 0.8182,
+      "top3_hit_rate": 0.8182,
+      "top5_hit_rate": 1.0,
+      "evaluated_cases": 11
+    }
+  },
+  "best_model": "LightGBM",
+  "features_used": [
+    "fraud_amount_log",
+    "incident_hour",
+    "is_weekend",
+    "hours_since_incident",
+    "tx_velocity_max",
+    "tx_hop_count",
+    "cluster_crime_density",
+    "cluster_atm_count",
+    "distance_to_complaint_km",
+    "historical_cluster_recurrence",
+    "syndicate_cluster_affinity",
+    "time_window_risk_alignment"
+  ]
+}

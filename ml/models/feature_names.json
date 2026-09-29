@@ -1,0 +1,14 @@
+[
+  "fraud_amount_log",
+  "incident_hour",
+  "is_weekend",
+  "hours_since_incident",
+  "tx_velocity_max",
+  "tx_hop_count",
+  "cluster_crime_density",
+  "cluster_atm_count",
+  "distance_to_complaint_km",
+  "historical_cluster_recurrence",
+  "syndicate_cluster_affinity",
+  "time_window_risk_alignment"
+]
